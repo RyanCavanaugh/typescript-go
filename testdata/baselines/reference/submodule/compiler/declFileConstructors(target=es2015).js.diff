@@ -1,0 +1,24 @@
+--- old.declFileConstructors(target=es2015).js
++++ new.declFileConstructors(target=es2015).js
+@@= skipped -222, +222 lines =@@
+     constructor(x: string);
+ }
+ export declare class ConstructorWithOptionalParameterProperty {
+-    x?: string | undefined;
+-    constructor(x?: string | undefined);
++    x?: string;
++    constructor(x?: string);
+ }
+ export declare class ConstructorWithParameterInitializer {
+     x: string;
+@@= skipped -34, +34 lines =@@
+     constructor(x: string);
+ }
+ declare class GlobalConstructorWithOptionalParameterProperty {
+-    x?: string | undefined;
+-    constructor(x?: string | undefined);
++    x?: string;
++    constructor(x?: string);
+ }
+ declare class GlobalConstructorWithParameterInitializer {
+     x: string;

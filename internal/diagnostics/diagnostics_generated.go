@@ -4292,6 +4292,8 @@ var Set_the_number_of_projects_to_build_concurrently = &Message{code: 100009, ca
 
 var Deduplicate_packages_with_the_same_name_and_version = &Message{code: 100011, category: CategoryMessage, key: "Deduplicate_packages_with_the_same_name_and_version_100011", text: "Deduplicate packages with the same name and version."}
 
+var Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error = &Message{code: 100012, category: CategoryMessage, key: "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100012", text: "Set the number of additional lines of context to show above and below each error."}
+
 func keyToMessage(key Key) *Message {
 	switch key {
 	case "Unterminated_string_literal_1002":
@@ -8584,6 +8586,8 @@ func keyToMessage(key Key) *Message {
 		return Set_the_number_of_projects_to_build_concurrently
 	case "Deduplicate_packages_with_the_same_name_and_version_100011":
 		return Deduplicate_packages_with_the_same_name_and_version
+	case "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100012":
+		return Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error
 	default:
 		return nil
 	}

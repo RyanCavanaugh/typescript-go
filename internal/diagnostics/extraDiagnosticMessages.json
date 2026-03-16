@@ -94,5 +94,9 @@
     "Deduplicate packages with the same name and version.": {
         "category": "Message",
         "code": 100011
+    },
+    "Set the number of additional lines of context to show above and below each error.": {
+        "category": "Message",
+        "code": 100012
     }
 }

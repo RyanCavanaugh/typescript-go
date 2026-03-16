@@ -101,7 +101,8 @@ func CompareASTDiagnostics(a, b *ASTDiagnostic) int {
 type FormattingOptions struct {
 	Locale locale.Locale
 	tspath.ComparePathsOptions
-	NewLine string
+	NewLine              string
+	ExpandedErrorContext int
 }
 
 const (
@@ -175,10 +176,21 @@ func writeCodeSnippet(writer io.Writer, sourceFile FileLike, start int, length i
 
 	lastLineOfFile := scanner.GetECMALineOfPosition(sourceFile, len(sourceFile.Text()))
 
+	// Expand the range to include context lines above and below the error.
+	contextLines := formatOpts.ExpandedErrorContext
+	contextFirstLine := max(0, firstLine-contextLines)
+	contextLastLine := min(lastLineOfFile, lastLine+contextLines)
+
 	hasMoreThanFiveLines := lastLine-firstLine >= 4
-	gutterWidth := len(strconv.Itoa(lastLine + 1))
+	gutterWidth := len(strconv.Itoa(contextLastLine + 1))
 	if hasMoreThanFiveLines {
 		gutterWidth = max(len(ellipsis), gutterWidth)
+	}
+
+	// Print context lines above the error.
+	for i := contextFirstLine; i < firstLine; i++ {
+		fmt.Fprint(writer, formatOpts.NewLine)
+		writeContextLine(writer, sourceFile, i, lastLineOfFile, gutterWidth, indent, formatOpts)
 	}
 
 	for i := firstLine; i <= lastLine; i++ {
@@ -248,6 +260,34 @@ func writeCodeSnippet(writer io.Writer, sourceFile FileLike, start int, length i
 
 		fmt.Fprint(writer, resetEscapeSequence)
 	}
+
+	// Print context lines below the error.
+	for i := lastLine + 1; i <= contextLastLine; i++ {
+		fmt.Fprint(writer, formatOpts.NewLine)
+		writeContextLine(writer, sourceFile, i, lastLineOfFile, gutterWidth, indent, formatOpts)
+	}
+}
+
+func writeContextLine(writer io.Writer, sourceFile FileLike, line int, lastLineOfFile int, gutterWidth int, indent string, formatOpts *FormattingOptions) {
+	lineStart := scanner.GetECMAPositionOfLineAndByteOffset(sourceFile, line, 0)
+	var lineEnd int
+	if line < lastLineOfFile {
+		lineEnd = scanner.GetECMAPositionOfLineAndByteOffset(sourceFile, line+1, 0)
+	} else {
+		lineEnd = len(sourceFile.Text())
+	}
+
+	lineContent := strings.TrimRightFunc(sourceFile.Text()[lineStart:lineEnd], unicode.IsSpace)
+	lineContent = strings.ReplaceAll(lineContent, "\t", " ")
+
+	fmt.Fprint(writer, indent)
+	fmt.Fprint(writer, foregroundColorEscapeGrey)
+	fmt.Fprintf(writer, "%*d", gutterWidth, line+1)
+	fmt.Fprint(writer, resetEscapeSequence)
+	fmt.Fprint(writer, gutterSeparator)
+	fmt.Fprint(writer, foregroundColorEscapeGrey)
+	fmt.Fprint(writer, lineContent)
+	fmt.Fprint(writer, resetEscapeSequence)
 }
 
 func FlattenDiagnosticMessage(d Diagnostic, newLine string, locale locale.Locale) string {

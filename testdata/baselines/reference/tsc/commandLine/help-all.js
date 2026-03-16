@@ -20,11 +20,11 @@ Build one or more projects and their dependencies, if out of date
 [94m--checkers[39m
 Set the number of checkers per project.
 
-[94m--help, -h[39m
-Print this message.
-
 [94m--help, -?[39m
 
+
+[94m--help, -h[39m
+Print this message.
 
 [94m--ignoreConfig[39m
 Ignore the tsconfig found and build with commandline options and files.
@@ -576,6 +576,11 @@ type: boolean
 default: `true` for ES2022 and above, including ESNext.
 
 ### Output Formatting
+
+[94m--expandedErrorContext[39m
+Set the number of additional lines of context to show above and below each error.
+type: number
+default: 0
 
 [94m--noErrorTruncation[39m
 Disable truncating types in error messages.

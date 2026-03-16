@@ -87,6 +87,35 @@ func TestCommandLineParseResult(t *testing.T) {
 	}
 }
 
+func TestParseExpandedErrorContext(t *testing.T) {
+	t.Parallel()
+
+	host := tsoptionstest.NewVFSParseConfigHost(map[string]string{}, "/project", true)
+
+	t.Run("parses --expandedErrorContext with value", func(t *testing.T) {
+		t.Parallel()
+		parsed := tsoptions.ParseCommandLine([]string{"--expandedErrorContext", "4", "0.ts"}, host)
+		assert.Assert(t, len(parsed.Errors) == 0, "expected no errors, got %v", parsed.Errors)
+		assert.Assert(t, parsed.CompilerOptions().ExpandedErrorContext != nil, "expected ExpandedErrorContext to be set")
+		assert.Equal(t, *parsed.CompilerOptions().ExpandedErrorContext, 4)
+	})
+
+	t.Run("parses --expandedErrorContext with zero", func(t *testing.T) {
+		t.Parallel()
+		parsed := tsoptions.ParseCommandLine([]string{"--expandedErrorContext", "0", "0.ts"}, host)
+		assert.Assert(t, len(parsed.Errors) == 0, "expected no errors, got %v", parsed.Errors)
+		assert.Assert(t, parsed.CompilerOptions().ExpandedErrorContext != nil, "expected ExpandedErrorContext to be set")
+		assert.Equal(t, *parsed.CompilerOptions().ExpandedErrorContext, 0)
+	})
+
+	t.Run("expandedErrorContext not set when not specified", func(t *testing.T) {
+		t.Parallel()
+		parsed := tsoptions.ParseCommandLine([]string{"0.ts"}, host)
+		assert.Assert(t, len(parsed.Errors) == 0, "expected no errors, got %v", parsed.Errors)
+		assert.Assert(t, parsed.CompilerOptions().ExpandedErrorContext == nil, "expected ExpandedErrorContext to be nil when not specified")
+	})
+}
+
 func TestCustomConditionsNullOverride(t *testing.T) {
 	t.Parallel()
 

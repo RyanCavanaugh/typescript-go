@@ -84,6 +84,57 @@ func TestGetExpandedErrorContext(t *testing.T) {
 			envVars:  map[string]string{"TSC_EEC": "6"},
 			expected: 6,
 		},
+		{
+			name:     "compiler option of zero",
+			options:  &core.CompilerOptions{ExpandedErrorContext: intPtr(0)},
+			expected: 0,
+		},
+		{
+			name:     "compiler option of zero takes priority over env var",
+			options:  &core.CompilerOptions{ExpandedErrorContext: intPtr(0)},
+			envVars:  map[string]string{"TSC_EEC": "5"},
+			expected: 0,
+		},
+		{
+			name:     "env var of zero",
+			options:  &core.CompilerOptions{},
+			envVars:  map[string]string{"TSC_EEC": "0"},
+			expected: 0,
+		},
+		{
+			name:     "empty string env var ignored",
+			options:  &core.CompilerOptions{},
+			envVars:  map[string]string{"TSC_EEC": ""},
+			expected: 0,
+		},
+		{
+			name:     "env var with whitespace ignored",
+			options:  &core.CompilerOptions{},
+			envVars:  map[string]string{"TSC_EEC": " 3 "},
+			expected: 0,
+		},
+		{
+			name:     "env var with float ignored",
+			options:  &core.CompilerOptions{},
+			envVars:  map[string]string{"TSC_EEC": "3.5"},
+			expected: 0,
+		},
+		{
+			name:     "very large compiler option value",
+			options:  &core.CompilerOptions{ExpandedErrorContext: intPtr(10000)},
+			expected: 10000,
+		},
+		{
+			name:     "very large env var value",
+			options:  &core.CompilerOptions{},
+			envVars:  map[string]string{"TSC_EEC": "10000"},
+			expected: 10000,
+		},
+		{
+			name:     "nil options with no env var",
+			options:  nil,
+			expected: 0,
+		},
 	}
 
 	for _, tt := range tests {

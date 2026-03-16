@@ -128,3 +128,242 @@ func TestWriteCodeSnippetContextAtFileEnd(t *testing.T) {
 	assert.Assert(t, strings.Contains(output, "line1"))     // context above
 	assert.Assert(t, strings.Contains(output, "errorLine")) // error line
 }
+
+func TestWriteCodeSnippetContextWithMultiLineError(t *testing.T) {
+	t.Parallel()
+
+	// Error spans two lines (line2 and line3)
+	content := "line0\nline1\nline2\nline3\nline4\nline5\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "line2")
+	errorLen := len("line2\nline3")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 1,
+	}
+	writeCodeSnippet(&buf, file, errorStart, errorLen, foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// With 1 context line, should show line1 (above), line2+line3 (error), line4 (below)
+	assert.Assert(t, strings.Contains(output, "line1"), "expected context line above") // context above
+	assert.Assert(t, strings.Contains(output, "line2"), "expected error line 1")       // error line
+	assert.Assert(t, strings.Contains(output, "line3"), "expected error line 2")       // error line
+	assert.Assert(t, strings.Contains(output, "line4"), "expected context line below") // context below
+	assert.Assert(t, !strings.Contains(output, "line0"), "should not contain line0")
+	assert.Assert(t, !strings.Contains(output, "line5"), "should not contain line5")
+}
+
+func TestWriteCodeSnippetContextWithZeroLengthSpan(t *testing.T) {
+	t.Parallel()
+
+	content := "line0\nline1\nline2\nline3\n"
+	file := newMockFile(content)
+	// Zero-length error at start of "line1"
+	errorStart := strings.Index(content, "line1")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 1,
+	}
+	writeCodeSnippet(&buf, file, errorStart, 0, foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Should still show the error line with context
+	assert.Assert(t, strings.Contains(output, "line0"), "expected context line above")
+	assert.Assert(t, strings.Contains(output, "line1"), "expected error line")
+	assert.Assert(t, strings.Contains(output, "line2"), "expected context line below")
+	assert.Assert(t, !strings.Contains(output, "line3"), "should not contain line3")
+}
+
+func TestWriteCodeSnippetContextWithIndent(t *testing.T) {
+	t.Parallel()
+
+	content := "line0\nline1\nline2\nline3\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "line1")
+
+	var buf strings.Builder
+	indent := "    "
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 1,
+	}
+	writeCodeSnippet(&buf, file, errorStart, len("line1"), foregroundColorEscapeRed, indent, formatOpts)
+	output := buf.String()
+
+	// All lines (error + context) should have the indent
+	lines := strings.Split(output, "\n")
+	nonEmptyLines := 0
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		nonEmptyLines++
+		assert.Assert(t, strings.HasPrefix(line, indent) || strings.HasPrefix(line, foregroundColorEscapeGrey),
+			"expected line to have indent or grey prefix, got: %q", line)
+	}
+	assert.Assert(t, nonEmptyLines > 0, "expected non-empty output")
+}
+
+func TestWriteCodeSnippetContextWithTabs(t *testing.T) {
+	t.Parallel()
+
+	content := "\tindented0\n\tindented1\n\tindented2\n\tindented3\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "\tindented1")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 1,
+	}
+	writeCodeSnippet(&buf, file, errorStart, len("\tindented1"), foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Tabs should be converted to spaces
+	assert.Assert(t, !strings.Contains(output, "\t"), "tabs should be converted to spaces")
+	assert.Assert(t, strings.Contains(output, "indented0"), "expected context line above")
+	assert.Assert(t, strings.Contains(output, "indented1"), "expected error line")
+	assert.Assert(t, strings.Contains(output, "indented2"), "expected context line below")
+}
+
+func TestWriteCodeSnippetContextSingleLineFile(t *testing.T) {
+	t.Parallel()
+
+	content := "only line"
+	file := newMockFile(content)
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 5,
+	}
+	writeCodeSnippet(&buf, file, 0, len("only line"), foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Should show the single line without panic
+	assert.Assert(t, strings.Contains(output, "only line"), "expected the single line to appear")
+}
+
+func TestWriteCodeSnippetContextLinesAreGrey(t *testing.T) {
+	t.Parallel()
+
+	content := "line0\nline1\nline2\nline3\nline4\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "line2")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 1,
+	}
+	writeCodeSnippet(&buf, file, errorStart, len("line2"), foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Context lines should use grey styling, error lines use gutter style
+	// Grey escape is used for context line numbers and content
+	assert.Assert(t, strings.Contains(output, foregroundColorEscapeGrey), "context lines should use grey styling")
+	assert.Assert(t, strings.Contains(output, gutterStyleSequence), "error lines should use gutter styling")
+}
+
+func TestWriteCodeSnippetContextGutterWidthWithHighLineNumbers(t *testing.T) {
+	t.Parallel()
+
+	// Create a file where context lines push the gutter width wider
+	// Error on line 1 (0-indexed), with context showing lines through line 999+
+	var sb strings.Builder
+	for i := range 12 {
+		sb.WriteString("line")
+		sb.WriteString(strings.Repeat("x", i))
+		sb.WriteString("\n")
+	}
+	content := sb.String()
+	file := newMockFile(content)
+	// Error on line 0
+	errorStart := 0
+	errorLen := len("line")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 11, // Show all 12 lines
+	}
+	writeCodeSnippet(&buf, file, errorStart, errorLen, foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// All lines should be present
+	assert.Assert(t, strings.Contains(output, "line"), "expected error line")
+	// Line numbers should be right-aligned - verify line 1 and line 12 are both present
+	assert.Assert(t, strings.Contains(output, "1"), "expected line number 1")
+	assert.Assert(t, strings.Contains(output, "12"), "expected line number 12")
+}
+
+func TestWriteCodeSnippetNoContextDoesNotChangeExistingBehavior(t *testing.T) {
+	t.Parallel()
+
+	content := "line0\nline1\nline2\nline3\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "line1")
+
+	// With context = 0, output should be same as if ExpandedErrorContext is not set
+	var bufWithZero strings.Builder
+	var bufDefault strings.Builder
+
+	optsZero := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 0,
+	}
+	optsDefault := &FormattingOptions{
+		NewLine: "\n",
+	}
+
+	writeCodeSnippet(&bufWithZero, file, errorStart, len("line1"), foregroundColorEscapeRed, "", optsZero)
+	writeCodeSnippet(&bufDefault, file, errorStart, len("line1"), foregroundColorEscapeRed, "", optsDefault)
+
+	assert.Equal(t, bufWithZero.String(), bufDefault.String(), "context=0 should produce same output as default")
+}
+
+func TestWriteCodeSnippetContextWithErrorOnLastLine(t *testing.T) {
+	t.Parallel()
+
+	content := "line0\nline1\nline2\nlastLine"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "lastLine")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 2,
+	}
+	writeCodeSnippet(&buf, file, errorStart, len("lastLine"), foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Error on last line with no trailing newline
+	assert.Assert(t, strings.Contains(output, "line1"), "expected context line above")
+	assert.Assert(t, strings.Contains(output, "line2"), "expected context line above")
+	assert.Assert(t, strings.Contains(output, "lastLine"), "expected error line")
+}
+
+func TestWriteCodeSnippetContextWithEmptyLines(t *testing.T) {
+	t.Parallel()
+
+	content := "before\n\nerrorLine\n\nafter\n"
+	file := newMockFile(content)
+	errorStart := strings.Index(content, "errorLine")
+
+	var buf strings.Builder
+	formatOpts := &FormattingOptions{
+		NewLine:              "\n",
+		ExpandedErrorContext: 2,
+	}
+	writeCodeSnippet(&buf, file, errorStart, len("errorLine"), foregroundColorEscapeRed, "", formatOpts)
+	output := buf.String()
+
+	// Should handle empty lines in context
+	assert.Assert(t, strings.Contains(output, "before"), "expected context line 'before'")
+	assert.Assert(t, strings.Contains(output, "errorLine"), "expected error line")
+	assert.Assert(t, strings.Contains(output, "after"), "expected context line 'after'")
+}

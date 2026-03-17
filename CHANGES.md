@@ -120,6 +120,22 @@ Where Strada reported the generic TS2345 ("Argument of type 'X' is not assignabl
 
 The diagnostics convey the same semantic error with more actionable detail.
 
+#### Circular import alias errors (TS2303) are now also reported on export statements.
+
+Strada only reported TS2303 on import declarations. Corsa reports the same error on both imports and exports when a circular alias is detected.
+
+#### Duplicate identifier errors are now reported individually (TS2300) rather than batched (TS6200).
+
+Related error spans and wording have also been updated.
+
+#### Isolated declaration error codes have changed.
+
+Some error codes for `isolatedDeclarations` violations have changed (e.g. TS9023 → TS9013). The errors still describe the same isolation constraints.
+
+#### Type assignability error wording has changed for call signatures.
+
+Where Strada said "Call signature return types are incompatible", Corsa reports "Type X is not assignable to type Y." The meaning is the same.
+
 #### With `"strict": false`, Corsa no longer allows omitting arguments for parameters with type `undefined`, `unknown`, or `any`:
 
 ```js

@@ -104,6 +104,22 @@ Corsa no longer parses the following JSDoc tags with a specific node type. They 
 
 ### Miscellaneous
 
+#### Unused type parameters now report TS6196 instead of TS6133.
+
+When `noUnusedParameters` is enabled, unused type parameters are reported with error TS6196 ("'T' is declared but never used") instead of TS6133 ("'T' is declared but its value is never read").
+TS6133 is for value-space identifiers; TS6196 is the correct code for type parameters, which have no runtime value.
+
+#### Type assignability errors now use more specific error codes instead of TS2345.
+
+Where Strada reported the generic TS2345 ("Argument of type 'X' is not assignable to parameter of type 'Y'"), Corsa reports a more specific code that identifies the root cause:
+
+- TS2739 — Type is missing properties from another type
+- TS2740 — Type is missing some properties from another type
+- TS2741 — Property is missing in type but required in another type
+- TS2322 — Type is not assignable to type (used in assignment/return contexts)
+
+The diagnostics convey the same semantic error with more actionable detail.
+
 #### With `"strict": false`, Corsa no longer allows omitting arguments for parameters with type `undefined`, `unknown`, or `any`:
 
 ```js

@@ -74,6 +74,8 @@ f.called = false;
 ## Scanner
 
 1. Node positions use UTF8 offsets from the beginning of the file, not UTF16 offsets. Node positions in files with non-ASCII characters will be greater than before.
+2. Binary/corrupted files are no longer detected as a single TS1490 "File appears to be binary" error. Each invalid character produces an individual TS1127 "Invalid character" error.
+3. Files with a `.map` extension are no longer rejected with TS6054 "unsupported extension". Source map files are now silently ignored when listed as input files.
 
 ## Parser
 
@@ -132,9 +134,9 @@ Related error spans and wording have also been updated.
 
 Some error codes for `isolatedDeclarations` violations have changed (e.g. TS9023 → TS9013). The errors still describe the same isolation constraints.
 
-#### Type assignability error wording has changed for call signatures.
+#### Type assignability error wording has changed for call and construct signatures.
 
-Where Strada said "Call signature return types are incompatible", Corsa reports "Type X is not assignable to type Y." The meaning is the same.
+Where Strada said "Call signature return types are incompatible" or wrapped the root cause in "Types of construct signatures are incompatible. Type X is not assignable to type Y.", Corsa reports "Type X is not assignable to type Y." directly. The meaning is the same.
 
 #### With `"strict": false`, Corsa no longer allows omitting arguments for parameters with type `undefined`, `unknown`, or `any`:
 
@@ -380,3 +382,48 @@ exports.foo = exports.bar = void 0;
 exports.foo = 123  // Exported type is `123`
 exports.bar = "abc"  // Exported type is `"abc"`
 ```
+
+## Extreme Trivia
+
+These changes are listed only for the purposes of completely accounting for all error diffs.
+
+#### Multi-overload "no overload matches" errors now show only the last overload's failure.
+
+Where Strada listed every overload's failure ("Overload 1 of N, '(sig)', gave the following error. ..."), Corsa shows only "The last overload gave the following error." with a TS2771 related info span pointing to the last overload's declaration. The error position may also shift to highlight the specific argument that failed.
+
+#### Optional parameter types no longer include `| undefined` in most error messages.
+
+Corsa omits the redundant `| undefined` from optional parameter types in error messages. For example, `(p?: string | undefined) => T` is printed as `(p?: string) => T`.
+
+#### Type names may be displayed differently in error messages.
+
+Some type names are represented differently:
+
+- `DateConstructor` is now displayed as `typeof Date`.
+- Unqualified names may be fully qualified (e.g. `ReactNode` → `React.ReactNode`, `connectExport` → `server.connectExport`).
+- Mixin anonymous class types omit their generic type arguments in display.
+- `undefined` optional properties may appear as `never` in certain intersection contexts.
+
+#### String literal types use single quotes in type displays.
+
+Where Strada printed string literal types with double quotes (`"value"`), Corsa uses single quotes (`'value'`).
+
+#### When all destructured elements are unused, a single error replaces individual TS6133 errors.
+
+Where Strada reported individual TS6133 ("'x' is declared but its value is never read") for each unused element in a destructuring pattern, Corsa reports a single TS6198 ("All destructured elements are unused") covering the whole pattern. Similarly, when all type parameters are unused, TS6205 ("All type parameters are unused") replaces individual TS6133 errors.
+
+#### Unused identifier error spans are narrower.
+
+For unused imports, the error squiggle covers only the imported name rather than the entire import statement. For unused type parameters, the span covers only the parameter name (not the surrounding angle brackets).
+
+#### Related info message text is displayed inline with its source location.
+
+Where Strada printed related info text on a separate line below the file:line:col location, Corsa prints it on the same line: `file.ts:1:5 - message text`.
+
+#### Duplicate identifier errors are now also reported on the first declaration.
+
+Strada reported TS2300 only on the second (and later) occurrences of a duplicate identifier. Corsa also reports it on the first occurrence.
+
+#### The 'Object' class name restriction (TS2725) has been removed.
+
+Strada reported TS2725 when a class inside a namespace was named `Object` when targeting ES5 with CommonJS. Corsa removes this check.

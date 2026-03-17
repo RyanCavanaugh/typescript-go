@@ -13,11 +13,12 @@ ExitStatus:: DiagnosticsPresent_OutputsGenerated
 Output::
 [96mindex.ts[0m:[93m2[0m:[93m7[0m - [91merror[0m[90m TS2322: [0mType 'number' is not assignable to type 'string'.
 
-[90m1[0m [90mconst a: number = 1;[0m
-[7m2[0m const b: string = 2;
-[7m [0m [91m      ~[0m
-[90m3[0m [90mconst c: number = 3;[0m
-[90m4[0m [90mconst d: number = 4;[0m
+File content of index.ts:
+[90m1.[0m [90mconst a: number = 1;[0m
+[7m2.[0m const b: string = 2;
+   [91m      ~[0m
+[90m3.[0m [90mconst c: number = 3;[0m
+[90m4.[0m [90mconst d: number = 4;[0m
 
 
 Found 1 error in index.ts[90m:2[0m

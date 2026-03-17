@@ -187,6 +187,22 @@ func writeCodeSnippet(writer io.Writer, sourceFile FileLike, start int, length i
 		gutterWidth = max(len(ellipsis), gutterWidth)
 	}
 
+	// When expanded error context is active, use a format that matches the File View
+	// tool output (e.g. "N. content") so that AI coding agents immediately recognize the
+	// output as verbatim file content they can use to make edits without a separate view.
+	useViewFormat := contextLines > 0
+
+	// Print a file header when showing expanded context, identifying the source file.
+	if useViewFormat {
+		relativeFileName := sourceFile.FileName()
+		if formatOpts.CurrentDirectory != "" {
+			relativeFileName = tspath.ConvertToRelativePath(sourceFile.FileName(), formatOpts.ComparePathsOptions)
+		}
+		fmt.Fprint(writer, formatOpts.NewLine)
+		fmt.Fprint(writer, indent)
+		fmt.Fprintf(writer, "File content of %s:", relativeFileName)
+	}
+
 	// Print context lines above the error.
 	for i := contextFirstLine; i < firstLine; i++ {
 		fmt.Fprint(writer, formatOpts.NewLine)
@@ -200,9 +216,13 @@ func writeCodeSnippet(writer io.Writer, sourceFile FileLike, start int, length i
 		// so we'll skip ahead to the second-to-last line.
 		if hasMoreThanFiveLines && firstLine+1 < i && i < lastLine-1 {
 			fmt.Fprint(writer, indent)
-			fmt.Fprint(writer, gutterStyleSequence)
-			fmt.Fprintf(writer, "%*s", gutterWidth, ellipsis)
-			fmt.Fprint(writer, resetEscapeSequence)
+			if useViewFormat {
+				fmt.Fprintf(writer, "%*s", gutterWidth+1, ellipsis)
+			} else {
+				fmt.Fprint(writer, gutterStyleSequence)
+				fmt.Fprintf(writer, "%*s", gutterWidth, ellipsis)
+				fmt.Fprint(writer, resetEscapeSequence)
+			}
 			fmt.Fprint(writer, gutterSeparator)
 			fmt.Fprint(writer, formatOpts.NewLine)
 			i = lastLine - 1
@@ -221,18 +241,28 @@ func writeCodeSnippet(writer io.Writer, sourceFile FileLike, start int, length i
 
 		// Output the gutter and the actual contents of the line.
 		fmt.Fprint(writer, indent)
-		fmt.Fprint(writer, gutterStyleSequence)
-		fmt.Fprintf(writer, "%*d", gutterWidth, i+1)
-		fmt.Fprint(writer, resetEscapeSequence)
+		if useViewFormat {
+			fmt.Fprint(writer, gutterStyleSequence)
+			fmt.Fprintf(writer, "%*d.", gutterWidth, i+1)
+			fmt.Fprint(writer, resetEscapeSequence)
+		} else {
+			fmt.Fprint(writer, gutterStyleSequence)
+			fmt.Fprintf(writer, "%*d", gutterWidth, i+1)
+			fmt.Fprint(writer, resetEscapeSequence)
+		}
 		fmt.Fprint(writer, gutterSeparator)
 		fmt.Fprint(writer, lineContent)
 		fmt.Fprint(writer, formatOpts.NewLine)
 
 		// Output the gutter and the error span for the line using tildes.
 		fmt.Fprint(writer, indent)
-		fmt.Fprint(writer, gutterStyleSequence)
-		fmt.Fprintf(writer, "%*s", gutterWidth, "")
-		fmt.Fprint(writer, resetEscapeSequence)
+		if useViewFormat {
+			fmt.Fprintf(writer, "%*s", gutterWidth+1, "")
+		} else {
+			fmt.Fprint(writer, gutterStyleSequence)
+			fmt.Fprintf(writer, "%*s", gutterWidth, "")
+			fmt.Fprint(writer, resetEscapeSequence)
+		}
 		fmt.Fprint(writer, gutterSeparator)
 		fmt.Fprint(writer, squiggleColor)
 		switch i {
@@ -282,7 +312,11 @@ func writeContextLine(writer io.Writer, sourceFile FileLike, line int, lastLineO
 
 	fmt.Fprint(writer, indent)
 	fmt.Fprint(writer, foregroundColorEscapeGrey)
-	fmt.Fprintf(writer, "%*d", gutterWidth, line+1)
+	if formatOpts.ExpandedErrorContext > 0 {
+		fmt.Fprintf(writer, "%*d.", gutterWidth, line+1)
+	} else {
+		fmt.Fprintf(writer, "%*d", gutterWidth, line+1)
+	}
 	fmt.Fprint(writer, resetEscapeSequence)
 	fmt.Fprint(writer, gutterSeparator)
 	fmt.Fprint(writer, foregroundColorEscapeGrey)

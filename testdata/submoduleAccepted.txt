@@ -408,3 +408,11 @@ conformance/stringLiteralTypesInImplementationSignatures2.errors.txt.diff
 conformance/stringNamedPropertyDuplicates.errors.txt.diff
 conformance/symbolProperty44.errors.txt.diff
 conformance/uniqueSymbolsPropertyNames.errors.txt.diff
+## 'Call signature return types' error message changed to 'Type X is not assignable to type Y' ##
+compiler/genericCallAtYieldExpressionInGenericCall1.errors.txt.diff
+compiler/iterableTReturnTNext(strictbuiltiniteratorreturn=true).errors.txt.diff
+compiler/nestedCallbackErrorNotFlattened.errors.txt.diff
+compiler/typeParameterArgumentEquivalence5.errors.txt.diff
+conformance/generatorTypeCheck25.errors.txt.diff
+conformance/generatorTypeCheck39.errors.txt.diff
+conformance/generatorTypeCheck63.errors.txt.diff

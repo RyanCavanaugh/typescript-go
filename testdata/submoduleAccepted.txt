@@ -416,3 +416,8 @@ compiler/typeParameterArgumentEquivalence5.errors.txt.diff
 conformance/generatorTypeCheck25.errors.txt.diff
 conformance/generatorTypeCheck39.errors.txt.diff
 conformance/generatorTypeCheck63.errors.txt.diff
+## TS7059 reserved syntax error in .mts/.cts files no longer emitted by Corsa ##
+conformance/nodeModulesForbidenSyntax(module=node16).errors.txt.diff
+conformance/nodeModulesForbidenSyntax(module=node18).errors.txt.diff
+conformance/nodeModulesForbidenSyntax(module=node20).errors.txt.diff
+conformance/nodeModulesForbidenSyntax(module=nodenext).errors.txt.diff

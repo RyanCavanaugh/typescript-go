@@ -595,3 +595,14 @@ conformance/nodeModulesImportHelpersCollisions3(module=node16,target=es2015).err
 conformance/nodeModulesImportHelpersCollisions3(module=node18,target=es2015).errors.txt.diff
 conformance/nodeModulesImportHelpersCollisions3(module=node20,target=es2015).errors.txt.diff
 conformance/nodeModulesImportHelpersCollisions3(module=nodenext,target=es2015).errors.txt.diff
+## TS2354 'This syntax requires an imported helper but module tslib cannot be found' error no longer emitted ##
+compiler/ctsFileInEsnextHelpers.errors.txt.diff
+compiler/esModuleInteropTslibHelpers.errors.txt.diff
+compiler/importHelpersES6.errors.txt.diff
+compiler/importHelpersWithImportOrExportDefaultNoTslib.1(esmoduleinterop=true,module=commonjs).errors.txt.diff
+compiler/importHelpersWithImportOrExportDefaultNoTslib.2(esmoduleinterop=true,module=commonjs).errors.txt.diff
+compiler/importHelpersWithImportOrExportDefaultNoTslib.3(esmoduleinterop=true,module=commonjs).errors.txt.diff
+compiler/tslibNotFoundDifferentModules.errors.txt.diff
+conformance/awaitUsingDeclarationsWithImportHelpers.errors.txt.diff
+conformance/exportAsNamespace_missingEmitHelpers.errors.txt.diff
+conformance/usingDeclarationsWithImportHelpers.errors.txt.diff

@@ -386,3 +386,25 @@ conformance/parserSkippedTokens7.errors.txt.diff
 conformance/parserSkippedTokens8.errors.txt.diff
 conformance/parserSkippedTokens9.errors.txt.diff
 conformance/parserX_TypeArgumentList1.errors.txt.diff
+## Additional TS2300/TS2804 duplicate identifier errors emitted by Corsa ##
+compiler/duplicateIdentifierComputedName.errors.txt.diff
+compiler/duplicateIdentifierDifferentSpelling.errors.txt.diff
+compiler/duplicateStringNamedProperty1.errors.txt.diff
+compiler/dynamicNamesErrors.errors.txt.diff
+compiler/numericClassMembers1.errors.txt.diff
+compiler/parameterPropertyInConstructor2.errors.txt.diff
+compiler/reassignStaticProp.errors.txt.diff
+compiler/staticModifierAlreadySeen.errors.txt.diff
+conformance/autoAccessor11.errors.txt.diff
+conformance/callSignaturesWithParameterInitializers2.errors.txt.diff
+conformance/constructSignatureWithAccessibilityModifiersOnParameters2.errors.txt.diff
+conformance/constructorParameterProperties2.errors.txt.diff
+conformance/duplicatePropertyNames.errors.txt.diff
+conformance/numericNamedPropertyDuplicates.errors.txt.diff
+conformance/numericStringNamedPropertyEquivalence.errors.txt.diff
+conformance/objectTypeWithDuplicateNumericProperty.errors.txt.diff
+conformance/parser0_004152.errors.txt.diff
+conformance/stringLiteralTypesInImplementationSignatures2.errors.txt.diff
+conformance/stringNamedPropertyDuplicates.errors.txt.diff
+conformance/symbolProperty44.errors.txt.diff
+conformance/uniqueSymbolsPropertyNames.errors.txt.diff

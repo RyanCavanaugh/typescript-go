@@ -287,3 +287,14 @@ conformance/emptyVariableDeclarationBindingPatterns01_ES5iterable(target=es2015)
 conformance/emptyVariableDeclarationBindingPatterns02_ES5iterable(target=es2015).errors.txt.diff
 conformance/forAwaitPerIterationBindingDownlevel(target=es2015).errors.txt.diff
 conformance/restParameterInDownlevelGenerator(target=es2015).errors.txt.diff
+## TS2725 'Class name cannot be Object' error no longer emitted by Corsa ##
+compiler/instanceofOperator(target=es2015).errors.txt.diff
+conformance/exportClassNameWithObjectCommonJS(target=es2015).errors.txt.diff
+conformance/nodeModulesAllowJsGeneratedNameCollisions(module=node16).errors.txt.diff
+conformance/nodeModulesAllowJsGeneratedNameCollisions(module=node18).errors.txt.diff
+conformance/nodeModulesAllowJsGeneratedNameCollisions(module=node20).errors.txt.diff
+conformance/nodeModulesAllowJsGeneratedNameCollisions(module=nodenext).errors.txt.diff
+conformance/nodeModulesGeneratedNameCollisions(module=node16).errors.txt.diff
+conformance/nodeModulesGeneratedNameCollisions(module=node18).errors.txt.diff
+conformance/nodeModulesGeneratedNameCollisions(module=node20).errors.txt.diff
+conformance/nodeModulesGeneratedNameCollisions(module=nodenext).errors.txt.diff

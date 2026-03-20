@@ -642,3 +642,11 @@ conformance/nodeModulesAllowJsImportHelpersCollisions3(module=node16,target=es20
 conformance/nodeModulesAllowJsImportHelpersCollisions3(module=node18,target=es2015).js.diff
 conformance/nodeModulesAllowJsImportHelpersCollisions3(module=node20,target=es2015).js.diff
 conformance/nodeModulesAllowJsImportHelpersCollisions3(module=nodenext,target=es2015).js.diff
+## TS2497 'module has no default export' error no longer emitted ##
+compiler/conflictingDeclarationsImportFromNamespace1.errors.txt.diff
+compiler/conflictingDeclarationsImportFromNamespace2.errors.txt.diff
+compiler/es6ImportEqualsExportModuleCommonJsError.errors.txt.diff
+compiler/es6ImportEqualsExportModuleEs2015Error.errors.txt.diff
+compiler/importNonExportedMember11.errors.txt.diff
+compiler/importNonExportedMember5.errors.txt.diff
+compiler/importNonExportedMember7.errors.txt.diff

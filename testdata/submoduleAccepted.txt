@@ -503,3 +503,19 @@ conformance/tsxStatelessFunctionComponentsWithTypeArguments4.types.diff
 conformance/typeParameterConstModifiersReturnsAndYields.types.diff
 conformance/typeParametersAreIdenticalToThemselves.types.diff
 conformance/typeParametersAvailableInNestedScope3.types.diff
+## Type display drops '| undefined' from optional parameter/property types ##
+compiler/argumentsReferenceInConstructor1_Js.types.diff
+compiler/argumentsReferenceInConstructor2_Js.types.diff
+compiler/argumentsReferenceInConstructor3_Js.types.diff
+compiler/argumentsReferenceInConstructor4_Js.types.diff
+compiler/argumentsReferenceInConstructor5_Js.types.diff
+compiler/argumentsReferenceInMethod1_Js.types.diff
+compiler/argumentsReferenceInMethod2_Js.types.diff
+compiler/argumentsReferenceInMethod3_Js.types.diff
+compiler/argumentsReferenceInMethod4_Js.types.diff
+compiler/argumentsReferenceInMethod5_Js.types.diff
+compiler/declarationEmitExactOptionalPropertyTypesNodeNotReused(exactoptionalpropertytypes=false).types.diff
+compiler/declarationEmitExactOptionalPropertyTypesNodeNotReused(exactoptionalpropertytypes=true).types.diff
+conformance/mappedTypeErrors.types.diff
+conformance/parserParameterList2.types.diff
+conformance/parserharness.types.diff

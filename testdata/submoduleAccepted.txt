@@ -116,6 +116,8 @@ conformance/unionTypeCallSignatures6.errors.txt.diff
 conformance/usingDeclarations.14.errors.txt.diff
 conformance/usingDeclarationsWithIteratorObject.errors.txt.diff
 
+## regex checking ##
+
 ## find all references ##
 fourslash/findAllReferences/isDefinitionAcrossGlobalProjects.baseline.jsonc.diff
 fourslash/findAllReferences/findAllRefsNonexistentPropertyNoCrash1.baseline.jsonc.diff

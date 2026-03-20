@@ -298,3 +298,20 @@ conformance/nodeModulesGeneratedNameCollisions(module=node16).errors.txt.diff
 conformance/nodeModulesGeneratedNameCollisions(module=node18).errors.txt.diff
 conformance/nodeModulesGeneratedNameCollisions(module=node20).errors.txt.diff
 conformance/nodeModulesGeneratedNameCollisions(module=nodenext).errors.txt.diff
+## File path normalization: leading './' removed from paths in symbol baselines ##
+compiler/decoratorMetadataTypeOnlyExport.symbols.diff
+compiler/decoratorMetadataTypeOnlyImport.symbols.diff
+compiler/es6ImportWithJsDocTags.symbols.diff
+compiler/mergeSymbolReexportInterface.symbols.diff
+compiler/mergeSymbolReexportedTypeAliasInstantiation.symbols.diff
+compiler/mergeSymbolRexportFunction.symbols.diff
+compiler/taggedTemplateWithoutDeclaredHelper(target=es2015).symbols.diff
+compiler/typeGuardNarrowsIndexedAccessOfKnownProperty8.symbols.diff
+compiler/uniqueSymbolJs.symbols.diff
+conformance/exportSpecifiers_js.symbols.diff
+conformance/importAttributes10.symbols.diff
+conformance/importAttributes11.symbols.diff
+conformance/importAttributes9.symbols.diff
+conformance/importSpecifiers_js.symbols.diff
+conformance/typeSatisfactionWithDefaultExport.symbols.diff
+fourslash/goToDefinition/goToDefinitionOverriddenMember8.baseline.jsonc.diff

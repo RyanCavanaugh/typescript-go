@@ -333,3 +333,10 @@ compiler/tslibMissingHelper.symbols.diff
 compiler/tslibMultipleMissingHelper.js.diff
 compiler/tslibMultipleMissingHelper.symbols.diff
 compiler/tslibNotFoundDifferentModules.symbols.diff
+## TS6054 unsupported file extension error no longer emitted by Corsa ##
+compiler/jsFileCompilationWithMapFileAsJs.errors.txt.diff
+compiler/jsFileCompilationWithMapFileAsJsWithInlineSourceMap.errors.txt.diff
+conformance/bundlerImportTsExtensions(allowimportingtsextensions=false,noemit=false).errors.txt.diff
+conformance/bundlerImportTsExtensions(allowimportingtsextensions=false,noemit=true).errors.txt.diff
+conformance/bundlerImportTsExtensions(allowimportingtsextensions=true,noemit=false).errors.txt.diff
+conformance/bundlerImportTsExtensions(allowimportingtsextensions=true,noemit=true).errors.txt.diff

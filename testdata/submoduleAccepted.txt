@@ -315,3 +315,21 @@ conformance/importAttributes9.symbols.diff
 conformance/importSpecifiers_js.symbols.diff
 conformance/typeSatisfactionWithDefaultExport.symbols.diff
 fourslash/goToDefinition/goToDefinitionOverriddenMember8.baseline.jsonc.diff
+## tslib.d.ts symbol declarations resolve actual source positions instead of (--, --) ##
+compiler/importHelpersES6.symbols.diff
+compiler/importHelpersInAmbientContext(target=es2015).symbols.diff
+compiler/importHelpersVerbatimModuleSyntax.symbols.diff
+compiler/importHelpersWithExportStarAs(esmoduleinterop=true,module=commonjs).symbols.diff
+compiler/importHelpersWithExportStarAs(esmoduleinterop=true,module=es2015).symbols.diff
+compiler/importHelpersWithExportStarAs(esmoduleinterop=true,module=es2020).symbols.diff
+compiler/importHelpersWithImportOrExportDefault(esmoduleinterop=true,module=commonjs).symbols.diff
+compiler/importHelpersWithImportOrExportDefault(esmoduleinterop=true,module=es2015).symbols.diff
+compiler/importHelpersWithImportOrExportDefault(esmoduleinterop=true,module=es2020).symbols.diff
+compiler/importHelpersWithImportStarAs(esmoduleinterop=true,module=commonjs).symbols.diff
+compiler/importHelpersWithImportStarAs(esmoduleinterop=true,module=es2015).symbols.diff
+compiler/importHelpersWithImportStarAs(esmoduleinterop=true,module=es2020).symbols.diff
+compiler/modulePreserveImportHelpers.symbols.diff
+compiler/tslibMissingHelper.symbols.diff
+compiler/tslibMultipleMissingHelper.js.diff
+compiler/tslibMultipleMissingHelper.symbols.diff
+compiler/tslibNotFoundDifferentModules.symbols.diff

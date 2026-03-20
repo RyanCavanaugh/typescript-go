@@ -606,3 +606,10 @@ compiler/tslibNotFoundDifferentModules.errors.txt.diff
 conformance/awaitUsingDeclarationsWithImportHelpers.errors.txt.diff
 conformance/exportAsNamespace_missingEmitHelpers.errors.txt.diff
 conformance/usingDeclarationsWithImportHelpers.errors.txt.diff
+## TS6053 'File not found' error for triple-slash references no longer emitted ##
+compiler/declarationEmitInvalidReference2.errors.txt.diff
+compiler/invalidTripleSlashReference.errors.txt.diff
+compiler/selfReferencingFile2.errors.txt.diff
+conformance/parserRealSource1.errors.txt.diff
+conformance/parserRealSource2.errors.txt.diff
+conformance/parserRealSource3.errors.txt.diff

@@ -1015,3 +1015,7 @@ conformance/privateConstructorFunction.errors.txt.diff
 conformance/extendsTag2.errors.txt.diff
 conformance/extendsTag4.errors.txt.diff
 conformance/jsdocAugments_notAClass.errors.txt.diff
+## TS2694 'Namespace has no exported member' error files created by Corsa ##
+conformance/jsDeclarationsImportNamespacedType.errors.txt.diff
+conformance/jsdocImportTypeReferenceToClassAlias.errors.txt.diff
+conformance/jsdocImportTypeReferenceToStringLiteral.errors.txt.diff

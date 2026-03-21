@@ -889,3 +889,16 @@ fourslash/findAllReferences/renameJsExports03.baseline.jsonc.diff
 
 ## Inlay hints result differences ##
 fourslash/inlayHints/inlayHintsTypeParameterModifiers1.baseline.diff
+
+## TS2749 'refers to a value but is used as a type' error files created by Corsa ##
+compiler/jsEnumTagOnObjectFrozen.errors.txt.diff
+conformance/commonJSImportClassTypeReference.errors.txt.diff
+conformance/commonJSImportExportedClassExpression.errors.txt.diff
+conformance/commonJSImportNestedClassTypeReference.errors.txt.diff
+conformance/enumTagUseBeforeDefCrash.errors.txt.diff
+conformance/exportedEnumTypeAndValue.errors.txt.diff
+conformance/jsDeclarationsEnumTag(target=es2015).errors.txt.diff
+conformance/jsDeclarationsReferenceToClassInstanceCrossFile.errors.txt.diff
+conformance/jsdocTypeReferenceToImport.errors.txt.diff
+conformance/jsdocTypeReferenceToValue.errors.txt.diff
+conformance/typeFromPropertyAssignment40.errors.txt.diff

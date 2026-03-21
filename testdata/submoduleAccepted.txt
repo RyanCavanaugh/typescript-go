@@ -935,3 +935,9 @@ compiler/jsDeclarationsGlobalFileConstFunction.errors.txt.diff
 conformance/callbackCrossModule.errors.txt.diff
 conformance/inferringClassMembersFromAssignments2.errors.txt.diff
 conformance/prototypePropertyAssignmentMergeAcrossFiles.errors.txt.diff
+
+## TS1340 'Module cannot be imported using this construct' error files created by Corsa ##
+conformance/jsDeclarationsParameterTagReusesInputNodeInEmit1.errors.txt.diff
+conformance/jsdocImportTypeReferenceToCommonjsModule.errors.txt.diff
+conformance/jsdocImportTypeReferenceToESModule.errors.txt.diff
+conformance/jsdocTypeReferenceToImportOfFunctionExpression.errors.txt.diff

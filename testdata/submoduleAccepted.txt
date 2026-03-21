@@ -803,3 +803,12 @@ fourslash/goToImplementation/goToImplementationShorthandPropertyAssignment_00.ba
 fourslash/goToImplementation/goToImplementationSuper_00.baseline.jsonc.diff
 fourslash/goToImplementation/goToImplementationSuper_01.baseline.jsonc.diff
 fourslash/goToImplementation/goToImplementationTypeAlias_00.baseline.jsonc.diff
+
+## Go to type result differences ##
+fourslash/goToType/goToTypeDefinition_arrayType.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinition_Pick.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinition_promiseType.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinition_returnType.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinition_typedef.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinitionImportMeta.baseline.jsonc.diff
+fourslash/goToType/goToTypeDefinitionModifiers.baseline.jsonc.diff

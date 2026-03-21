@@ -1019,3 +1019,14 @@ conformance/jsdocAugments_notAClass.errors.txt.diff
 conformance/jsDeclarationsImportNamespacedType.errors.txt.diff
 conformance/jsdocImportTypeReferenceToClassAlias.errors.txt.diff
 conformance/jsdocImportTypeReferenceToStringLiteral.errors.txt.diff
+## Type display combines quote style preservation and type parameter renumbering ##
+compiler/declarationEmitAliasInlineing.types.diff
+compiler/declarationEmitMappedTypeDistributivityPreservesConstraints.types.diff
+compiler/destructuredDeclarationEmit.types.diff
+compiler/discriminantPropertyCheck.types.diff
+compiler/genericObjectSpreadResultInSwitch.types.diff
+compiler/jsFileFunctionOverloads.types.diff
+compiler/narrowingNoInfer1.types.diff
+conformance/constAssertions.types.diff
+conformance/stringLiteralTypeIsSubtypeOfString.types.diff
+conformance/typeTagOnPropertyAssignment.types.diff

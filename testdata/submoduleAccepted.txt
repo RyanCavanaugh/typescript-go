@@ -1030,3 +1030,15 @@ compiler/narrowingNoInfer1.types.diff
 conformance/constAssertions.types.diff
 conformance/stringLiteralTypeIsSubtypeOfString.types.diff
 conformance/typeTagOnPropertyAssignment.types.diff
+## 'new AbstractClass' returns class type instead of 'any' in type baselines ##
+compiler/abstractClassInLocalScopeIsAbstract.types.diff
+compiler/newAbstractInstance2.types.diff
+conformance/classAbstractConstructorAssignability.types.diff
+conformance/classAbstractFactoryFunction.types.diff
+conformance/classAbstractImportInstantiation.types.diff
+conformance/classAbstractInstantiations1.types.diff
+conformance/classAbstractInstantiations2.types.diff
+conformance/classAbstractMergedDeclaration.types.diff
+conformance/classAbstractSingleLineDecl.types.diff
+conformance/classAbstractUsingAbstractMethod1.types.diff
+conformance/classConstructorAccessibility5.types.diff

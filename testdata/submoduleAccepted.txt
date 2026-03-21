@@ -929,3 +929,9 @@ conformance/circularMultipleAssignmentDeclaration.errors.txt.diff
 conformance/nestedPrototypeAssignment.errors.txt.diff
 conformance/typeFromPropertyAssignment9.errors.txt.diff
 conformance/typeFromPropertyAssignment9_1.errors.txt.diff
+
+## TS2683 ''this' implicitly has type 'any'' error files created by Corsa ##
+compiler/jsDeclarationsGlobalFileConstFunction.errors.txt.diff
+conformance/callbackCrossModule.errors.txt.diff
+conformance/inferringClassMembersFromAssignments2.errors.txt.diff
+conformance/prototypePropertyAssignmentMergeAcrossFiles.errors.txt.diff

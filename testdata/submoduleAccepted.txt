@@ -969,3 +969,16 @@ compiler/unusedTypeParametersCheckedByNoUnusedParameters.errors.txt.diff
 compiler/unusedTypeParametersWithUnderscore.errors.txt.diff
 compiler/unusedTypeParameters_infer.errors.txt.diff
 compiler/unusedTypeParameters_templateTag.errors.txt.diff
+## TS2307 'Cannot find module' error added by Corsa ##
+compiler/moduleResolutionAsTypeReferenceDirective.errors.txt.diff
+compiler/moduleResolutionAsTypeReferenceDirectiveScoped.errors.txt.diff
+compiler/moduleResolutionWithSymlinks_notInNodeModules.errors.txt.diff
+compiler/nodeNextImportModeImplicitIndexResolution2.errors.txt.diff
+compiler/nodeNextPackageSelfNameWithOutDir.errors.txt.diff
+compiler/nodeNextPackageSelfNameWithOutDirDeclDir.errors.txt.diff
+conformance/nodeAllowJsPackageSelfName(module=node20).errors.txt.diff
+conformance/nodeAllowJsPackageSelfName(module=nodenext).errors.txt.diff
+conformance/nodeModulesAllowJsPackageImports(module=node20).errors.txt.diff
+conformance/nodeModulesAllowJsPackageImports(module=nodenext).errors.txt.diff
+conformance/nodeModulesDeclarationEmitWithPackageExports(module=node20).errors.txt.diff
+conformance/nodeModulesDeclarationEmitWithPackageExports(module=nodenext).errors.txt.diff

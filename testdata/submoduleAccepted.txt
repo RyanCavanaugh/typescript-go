@@ -989,3 +989,18 @@ conformance/nodeModulesAllowJsPackageImports(module=node16).errors.txt.diff
 conformance/nodeModulesAllowJsPackageImports(module=node18).errors.txt.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=node16).errors.txt.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=node18).errors.txt.diff
+## TS2309 'export assignment' + TS2339 'property does not exist' error files created by Corsa ##
+compiler/jsExportAssignmentNonMutableLocation.errors.txt.diff
+compiler/jsExportMemberMergedWithModuleAugmentation3.errors.txt.diff
+conformance/jsDeclarationsClassExtendsVisibility(target=es2015).errors.txt.diff
+conformance/jsDeclarationsClassStatic(target=es2015).errors.txt.diff
+conformance/jsDeclarationsExportAssignedClassExpressionAnonymousWithSub(target=es2015).errors.txt.diff
+conformance/jsDeclarationsExportAssignedClassExpressionShadowing(target=es2015).errors.txt.diff
+conformance/jsDeclarationsExportAssignedClassInstance3(target=es2015).errors.txt.diff
+conformance/jsDeclarationsExportAssignmentExpressionPlusSecondary(target=es2015).errors.txt.diff
+conformance/jsDeclarationsExportSubAssignments(target=es2015).errors.txt.diff
+conformance/moduleExportAlias4.errors.txt.diff
+conformance/moduleExportAliasImported.errors.txt.diff
+conformance/moduleExportAssignment4.errors.txt.diff
+conformance/moduleExportAssignment5.errors.txt.diff
+conformance/moduleExportPropertyAssignmentDefault.errors.txt.diff

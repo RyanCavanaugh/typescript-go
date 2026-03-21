@@ -1271,3 +1271,20 @@ conformance/nodeModulesDeclarationEmitWithPackageExports(module=node16).types.di
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=node18).types.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=node20).types.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=nodenext).types.diff
+
+## Symbol name differs but declaration location unchanged in .symbols baselines ##
+compiler/aliasErrors.symbols.diff
+compiler/checkingObjectDefinePropertyOnFunctionNonexistentPropertyNoCrash1.symbols.diff
+compiler/dottedModuleName2.symbols.diff
+compiler/escapedIdentifiers.symbols.diff
+compiler/exportDefaultProperty.symbols.diff
+compiler/extendedUnicodePlaneIdentifiers.symbols.diff
+compiler/importOnAliasedIdentifiers.symbols.diff
+compiler/importedEnumMemberMergedWithExportedAliasIsError.symbols.diff
+compiler/jsFileCompilationExternalPackageError.symbols.diff
+compiler/moduledecl(target=es2015).symbols.diff
+compiler/resolveNameWithNamspace.symbols.diff
+compiler/unicodeEscapesInNames01(target=es2015).symbols.diff
+compiler/unicodeEscapesInNames01(target=esnext).symbols.diff
+conformance/paramTagOnCallExpression.symbols.diff
+conformance/untypedModuleImport_allowJs.symbols.diff

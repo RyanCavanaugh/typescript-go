@@ -2030,3 +2030,8 @@ conformance/typedefCrossModule3.types.diff
 conformance/typedefTagExtraneousProperty.types.diff
 conformance/typedefTagTypeResolution.types.diff
 conformance/typedefTagWrapping.types.diff
+
+## Node module type resolution differences ##
+compiler/moduleResolutionWithSymlinks_notInNodeModules.types.diff
+compiler/nodeNextPackageSelfNameWithOutDir.types.diff
+compiler/nodeNextPackageSelfNameWithOutDirDeclDir.types.diff

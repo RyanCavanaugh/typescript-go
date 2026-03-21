@@ -656,3 +656,8 @@ conformance/nodeModulesAllowJsExportAssignment(module=node16).errors.txt.diff
 conformance/nodeModulesAllowJsExportAssignment(module=node18).errors.txt.diff
 conformance/nodeModulesAllowJsExportAssignment(module=node20).errors.txt.diff
 conformance/nodeModulesAllowJsExportAssignment(module=nodenext).errors.txt.diff
+## TS5095 'Option bundler can only be used when module is preserve/esnext' error no longer emitted ##
+conformance/bundlerDirectoryModule(module=node18,moduleresolution=bundler).errors.txt.diff
+conformance/bundlerDirectoryModule(module=node20,moduleresolution=bundler).errors.txt.diff
+conformance/bundlerDirectoryModule(module=nodenext,moduleresolution=bundler).errors.txt.diff
+conformance/bundlerOptionsCompat.errors.txt.diff

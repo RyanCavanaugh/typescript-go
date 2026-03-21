@@ -982,3 +982,10 @@ conformance/nodeModulesAllowJsPackageImports(module=node20).errors.txt.diff
 conformance/nodeModulesAllowJsPackageImports(module=nodenext).errors.txt.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=node20).errors.txt.diff
 conformance/nodeModulesDeclarationEmitWithPackageExports(module=nodenext).errors.txt.diff
+## TS1479 import extension error replaced with TS2307 'Cannot find module' ##
+conformance/nodeAllowJsPackageSelfName(module=node16).errors.txt.diff
+conformance/nodeAllowJsPackageSelfName(module=node18).errors.txt.diff
+conformance/nodeModulesAllowJsPackageImports(module=node16).errors.txt.diff
+conformance/nodeModulesAllowJsPackageImports(module=node18).errors.txt.diff
+conformance/nodeModulesDeclarationEmitWithPackageExports(module=node16).errors.txt.diff
+conformance/nodeModulesDeclarationEmitWithPackageExports(module=node18).errors.txt.diff

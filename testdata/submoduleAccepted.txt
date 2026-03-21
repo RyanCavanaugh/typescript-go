@@ -1208,3 +1208,20 @@ conformance/typeOnlyESMImportFromCJS(module=nodenext).types.diff
 conformance/typeTagCircularReferenceOnConstructorFunction.types.diff
 conformance/typeTagPrototypeAssignment.types.diff
 conformance/typedefCrossModule4.types.diff
+
+## JS function rest params from 'arguments' usage removed from type display ##
+compiler/argumentsObjectCreatesRestForJs.types.diff
+compiler/argumentsPropertyNameInJsMode2.types.diff
+compiler/argumentsReferenceInFunction1_Js.types.diff
+compiler/contextuallyTypeArgumentsKeyword.types.diff
+compiler/controlFlowInstanceofWithSymbolHasInstance.types.diff
+compiler/declarationEmitPrivateNameCausesError.types.diff
+compiler/jsSelfReferencingArgumentsFunction.types.diff
+compiler/noParameterReassignmentIIFEAnnotated.types.diff
+compiler/noParameterReassignmentJSIIFE.types.diff
+compiler/superNoModifiersCrash.types.diff
+compiler/typeAliasFunctionTypeSharedSymbol.types.diff
+conformance/anonymousClassAccessorsDeclarationEmit1.types.diff
+conformance/inferTypes1.types.diff
+conformance/instanceofOperatorWithRHSHasSymbolHasInstance.types.diff
+conformance/paramTagOnFunctionUsingArguments.types.diff

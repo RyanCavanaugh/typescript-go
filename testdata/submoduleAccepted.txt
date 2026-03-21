@@ -912,3 +912,14 @@ conformance/typeFromPropertyAssignment35.errors.txt.diff
 conformance/typeFromPropertyAssignment4.errors.txt.diff
 conformance/typeFromPropertyAssignment5.errors.txt.diff
 conformance/typeFromPropertyAssignmentOutOfOrder(target=es2015).errors.txt.diff
+
+## TS2339 'Property does not exist on type' error files created by Corsa ##
+compiler/contextualReturnTypeOfIIFE2.errors.txt.diff
+compiler/jsExpandoObjectDefineProperty.errors.txt.diff
+conformance/inferringClassMembersFromAssignments7.errors.txt.diff
+conformance/jsDeclarationsClassStaticMethodAugmentation(target=es2015).errors.txt.diff
+conformance/jsDeclarationsTypeReferences3(target=es2015).errors.txt.diff
+conformance/moduleExportAlias.errors.txt.diff
+conformance/moduleExportsElementAccessAssignment.errors.txt.diff
+conformance/typeFromPropertyAssignment12.errors.txt.diff
+conformance/typeFromPropertyAssignment23.errors.txt.diff

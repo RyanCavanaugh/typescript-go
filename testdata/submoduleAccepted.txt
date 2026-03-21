@@ -902,3 +902,13 @@ conformance/jsDeclarationsReferenceToClassInstanceCrossFile.errors.txt.diff
 conformance/jsdocTypeReferenceToImport.errors.txt.diff
 conformance/jsdocTypeReferenceToValue.errors.txt.diff
 conformance/typeFromPropertyAssignment40.errors.txt.diff
+## TS2503 'Cannot find namespace' error files created by Corsa ##
+conformance/typeFromPropertyAssignment10.errors.txt.diff
+conformance/typeFromPropertyAssignment10_1.errors.txt.diff
+conformance/typeFromPropertyAssignment14.errors.txt.diff
+conformance/typeFromPropertyAssignment15.errors.txt.diff
+conformance/typeFromPropertyAssignment16.errors.txt.diff
+conformance/typeFromPropertyAssignment35.errors.txt.diff
+conformance/typeFromPropertyAssignment4.errors.txt.diff
+conformance/typeFromPropertyAssignment5.errors.txt.diff
+conformance/typeFromPropertyAssignmentOutOfOrder(target=es2015).errors.txt.diff

@@ -1004,3 +1004,9 @@ conformance/moduleExportAliasImported.errors.txt.diff
 conformance/moduleExportAssignment4.errors.txt.diff
 conformance/moduleExportAssignment5.errors.txt.diff
 conformance/moduleExportPropertyAssignmentDefault.errors.txt.diff
+## TS2683 'this has type any' + TS7009 'new expression with no construct sig' error files created ##
+compiler/commonjsAccessExports.errors.txt.diff
+compiler/jsDeclarationsGlobalFileConstFunctionNamed.errors.txt.diff
+conformance/constructorFunctions3.errors.txt.diff
+conformance/inferringClassMembersFromAssignments6.errors.txt.diff
+conformance/privateConstructorFunction.errors.txt.diff

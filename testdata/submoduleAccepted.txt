@@ -1638,3 +1638,15 @@ conformance/typeFromPropertyAssignmentWithExport.symbols.diff
 conformance/typeTagCircularReferenceOnConstructorFunction.symbols.diff
 conformance/typeTagPrototypeAssignment.symbols.diff
 conformance/typedefTagExtraneousProperty.symbols.diff
+
+## Symbol Decl source positions differ between Corsa and Strada ##
+compiler/classFieldSuperAccessibleJs2.symbols.diff
+compiler/defaultPropsEmptyCurlyBecomesAnyForJs.symbols.diff
+compiler/jsNoImplicitAnyNoCascadingReferenceErrors.symbols.diff
+conformance/fixSignatureCaching.symbols.diff
+conformance/importingExportingTypes.symbols.diff
+conformance/inferringClassMembersFromAssignments3.symbols.diff
+conformance/inferringClassMembersFromAssignments4.symbols.diff
+conformance/privateNameBadDeclaration(target=es2015).symbols.diff
+conformance/privateNameJsBadAssignment.symbols.diff
+conformance/typeFromContextualThisType.symbols.diff

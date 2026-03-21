@@ -650,3 +650,9 @@ compiler/es6ImportEqualsExportModuleEs2015Error.errors.txt.diff
 compiler/importNonExportedMember11.errors.txt.diff
 compiler/importNonExportedMember5.errors.txt.diff
 compiler/importNonExportedMember7.errors.txt.diff
+## TS2591 'Cannot find name require/exports' error no longer emitted ##
+conformance/jsDeclarationsExportFormsErr(target=es2015).errors.txt.diff
+conformance/nodeModulesAllowJsExportAssignment(module=node16).errors.txt.diff
+conformance/nodeModulesAllowJsExportAssignment(module=node18).errors.txt.diff
+conformance/nodeModulesAllowJsExportAssignment(module=node20).errors.txt.diff
+conformance/nodeModulesAllowJsExportAssignment(module=nodenext).errors.txt.diff

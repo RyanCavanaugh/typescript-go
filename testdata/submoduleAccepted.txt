@@ -1522,3 +1522,12 @@ conformance/thisPropertyAssignment.symbols.diff
 conformance/thisPropertyAssignmentCircular.symbols.diff
 conformance/typeFromPropertyAssignment37.symbols.diff
 conformance/typeFromPropertyAssignment40.symbols.diff
+
+## Additional symbol resolutions added by Corsa ##
+compiler/expressionWithJSDocTypeArguments.symbols.diff
+conformance/conflictingCommonJSES2015Exports.symbols.diff
+conformance/destructuringParameterDeclaration9(strict=true).symbols.diff
+conformance/jsDeclarationsExportFormsErr(target=es2015).symbols.diff
+conformance/jsdocAugmentsMissingType.symbols.diff
+conformance/typesWithPrivateConstructor.symbols.diff
+conformance/typesWithProtectedConstructor.symbols.diff

@@ -1135,3 +1135,15 @@ conformance/tsxUnionElementType3.errors.txt.diff
 conformance/tsxUnionElementType4.errors.txt.diff
 conformance/typeArgumentInference.errors.txt.diff
 conformance/typeArgumentInferenceWithConstraints.errors.txt.diff
+
+## Type arguments dropped from anonymous class references (Mixin<any>.X -> Mixin.X) ##
+compiler/baseConstraintOfDecorator.types.diff
+compiler/declarationNoDanglingGenerics.types.diff
+compiler/exportClassExtendingIntersection.types.diff
+compiler/jsdocClassMissingTypeArguments.types.diff
+compiler/mixinOverMappedTypeNoCrash.types.diff
+conformance/accessorsOverrideProperty9.types.diff
+conformance/mixinAbstractClasses.2.types.diff
+conformance/mixinAbstractClasses.types.diff
+conformance/mixinClassesAnnotated.types.diff
+conformance/templateInsideCallback.types.diff

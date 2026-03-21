@@ -661,3 +661,16 @@ conformance/bundlerDirectoryModule(module=node18,moduleresolution=bundler).error
 conformance/bundlerDirectoryModule(module=node20,moduleresolution=bundler).errors.txt.diff
 conformance/bundlerDirectoryModule(module=nodenext,moduleresolution=bundler).errors.txt.diff
 conformance/bundlerOptionsCompat.errors.txt.diff
+## TS2303 'Circular definition of import alias' error added by Corsa ##
+compiler/circularModuleImports.errors.txt.diff
+compiler/declarationEmitUnknownImport(target=es2015).errors.txt.diff
+compiler/declarationEmitUnknownImport2(target=es2015).errors.txt.diff
+compiler/exportAsNamespaceConflict.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType1.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType2.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType3.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType4.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType5.errors.txt.diff
+compiler/recursiveExportAssignmentAndFindAliasedType6.errors.txt.diff
+conformance/circular1.errors.txt.diff
+conformance/circular3.errors.txt.diff

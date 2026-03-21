@@ -1010,3 +1010,8 @@ compiler/jsDeclarationsGlobalFileConstFunctionNamed.errors.txt.diff
 conformance/constructorFunctions3.errors.txt.diff
 conformance/inferringClassMembersFromAssignments6.errors.txt.diff
 conformance/privateConstructorFunction.errors.txt.diff
+
+## TS8022 'JSDoc @extends must name a class' error no longer emitted ##
+conformance/extendsTag2.errors.txt.diff
+conformance/extendsTag4.errors.txt.diff
+conformance/jsdocAugments_notAClass.errors.txt.diff

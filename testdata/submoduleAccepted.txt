@@ -709,7 +709,8 @@ conformance/esDecorators-classDeclaration-sourceMap(target=es2015).sourcemap.txt
 conformance/esDecorators-classDeclaration-sourceMap(target=es2022).sourcemap.txt.diff
 conformance/esDecorators-classDeclaration-sourceMap(target=esnext).sourcemap.txt.diff
 conformance/tsxEmit3.sourcemap.txt.diff
-## Smart selection range differences ##fourslash/smartSelection/smartSelection_behindCaret.baseline.diff
+## Smart selection range differences ##
+fourslash/smartSelection/smartSelection_behindCaret.baseline.diff
 fourslash/smartSelection/smartSelection_bindingPatterns.baseline.diff
 fourslash/smartSelection/smartSelection_complex.baseline.diff
 fourslash/smartSelection/smartSelection_emptyRanges.baseline.diff
@@ -885,3 +886,6 @@ fourslash/findAllReferences/jsdocTypedefTagSemanticMeaning1.baseline.jsonc.diff
 fourslash/findAllReferences/renameJsExports01.baseline.jsonc.diff
 fourslash/findAllReferences/renameJsExports02.baseline.jsonc.diff
 fourslash/findAllReferences/renameJsExports03.baseline.jsonc.diff
+
+## Inlay hints result differences ##
+fourslash/inlayHints/inlayHintsTypeParameterModifiers1.baseline.diff

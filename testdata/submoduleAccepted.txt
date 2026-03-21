@@ -923,3 +923,9 @@ conformance/moduleExportAlias.errors.txt.diff
 conformance/moduleExportsElementAccessAssignment.errors.txt.diff
 conformance/typeFromPropertyAssignment12.errors.txt.diff
 conformance/typeFromPropertyAssignment23.errors.txt.diff
+
+## TS2304 'Cannot find name' error files created by Corsa ##
+conformance/circularMultipleAssignmentDeclaration.errors.txt.diff
+conformance/nestedPrototypeAssignment.errors.txt.diff
+conformance/typeFromPropertyAssignment9.errors.txt.diff
+conformance/typeFromPropertyAssignment9_1.errors.txt.diff

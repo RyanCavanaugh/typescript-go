@@ -1402,6 +1402,112 @@ func (f *FourslashTest) VerifyOrganizeImports(t *testing.T, expectedContent stri
 	}
 }
 
+// MoveToFileOptions configures a VerifyMoveToFile test.
+type MoveToFileOptions struct {
+	// NewFileContents maps file names to their expected content after the refactoring.
+	NewFileContents map[string]string
+	// TargetFile is the file to move the selection to.
+	TargetFile string
+}
+
+// VerifyMoveToFile tests the "Move to file" refactoring by verifying that:
+// 1. The refactoring code action is offered for the current selection
+// 2. Resolving the action with the given target file produces the expected file contents
+func (f *FourslashTest) VerifyMoveToFile(t *testing.T, options *MoveToFileOptions) {
+	t.Helper()
+
+	// First, request code actions to verify the refactoring is offered
+	params := &lsproto.CodeActionParams{
+		TextDocument: lsproto.TextDocumentIdentifier{
+			Uri: lsconv.FileNameToDocumentURI(f.activeFilename),
+		},
+		Range: lsproto.Range{
+			Start: f.currentCaretPosition,
+			End:   f.selectionEndPosition(),
+		},
+		Context: &lsproto.CodeActionContext{
+			Only: &[]lsproto.CodeActionKind{"refactor.move.file"},
+		},
+	}
+
+	result := sendRequest(t, f, lsproto.TextDocumentCodeActionInfo, params)
+
+	if result.CommandOrCodeActionArray == nil || len(*result.CommandOrCodeActionArray) == 0 {
+		t.Fatalf("No 'Move to file' code action found")
+	}
+
+	var moveAction *lsproto.CodeAction
+	for _, item := range *result.CommandOrCodeActionArray {
+		if item.CodeAction != nil && item.CodeAction.Data != nil && item.CodeAction.Data.Type == "refactor" {
+			moveAction = item.CodeAction
+			break
+		}
+	}
+
+	if moveAction == nil {
+		t.Fatalf("No 'Move to file' refactoring action found in code action results")
+	}
+
+	// Now resolve the action with the target file
+	moveAction.Data.InteractiveRefactorArguments = &lsproto.InteractiveRefactorArguments{
+		TargetFile: options.TargetFile,
+	}
+
+	resolved := sendRequest(t, f, lsproto.CodeActionResolveInfo, moveAction)
+	if resolved == nil {
+		t.Fatalf("codeAction/resolve returned nil")
+	}
+
+	if resolved.Edit == nil {
+		t.Fatalf("Resolved code action has no edit")
+	}
+
+	// Apply the edits
+	if resolved.Edit.DocumentChanges != nil {
+		for _, change := range *resolved.Edit.DocumentChanges {
+			if change.CreateFile != nil {
+				// Create a new script info for the new file
+				fileName := change.CreateFile.Uri.FileName()
+				if f.getScriptInfo(fileName) == nil {
+					f.scriptInfos[fileName] = newScriptInfo(fileName, "")
+				}
+			}
+			if change.TextDocumentEdit != nil {
+				fileName := change.TextDocumentEdit.TextDocument.Uri.FileName()
+				script := f.getScriptInfo(fileName)
+				if script == nil {
+					script = newScriptInfo(fileName, "")
+					f.scriptInfos[fileName] = script
+				}
+				var edits []*lsproto.TextEdit
+				for _, e := range change.TextDocumentEdit.Edits {
+					if e.TextEdit != nil {
+						edits = append(edits, e.TextEdit)
+					}
+				}
+				f.applyTextEditsToFile(t, fileName, edits)
+			}
+		}
+	}
+	if resolved.Edit.Changes != nil {
+		for uri, edits := range *resolved.Edit.Changes {
+			fileName := uri.FileName()
+			f.applyTextEditsToFile(t, fileName, edits)
+		}
+	}
+
+	// Verify the expected file contents
+	for fileName, expectedContent := range options.NewFileContents {
+		script := f.getScriptInfo(fileName)
+		if script == nil {
+			t.Fatalf("Expected file %s to exist after refactoring, but it was not found", fileName)
+		}
+		if script.content != expectedContent {
+			t.Fatalf("File %s content mismatch.\nExpected:\n%s\n\nActual:\n%s", fileName, expectedContent, script.content)
+		}
+	}
+}
+
 type ApplyCodeActionFromCompletionOptions struct {
 	Name            string
 	Source          string
@@ -2854,6 +2960,13 @@ func (f *FourslashTest) getSelection() core.TextRange {
 	)
 }
 
+func (f *FourslashTest) selectionEndPosition() lsproto.Position {
+	if f.selectionEnd != nil {
+		return *f.selectionEnd
+	}
+	return f.currentCaretPosition
+}
+
 // Updates f.currentCaretPosition
 func (f *FourslashTest) applyTextEdits(t *testing.T, edits []*lsproto.TextEdit) int {
 	script := f.getScriptInfo(f.activeFilename)
@@ -2886,6 +2999,27 @@ func (f *FourslashTest) applyTextEdits(t *testing.T, edits []*lsproto.TextEdit) 
 	}
 	f.currentCaretPosition = f.converters.PositionToLineAndCharacter(script, core.TextPos(currentCaretPosition))
 	return totalOffset
+}
+
+// applyTextEditsToFile applies text edits to a specific file (not necessarily the active file).
+func (f *FourslashTest) applyTextEditsToFile(t *testing.T, fileName string, edits []*lsproto.TextEdit) {
+	t.Helper()
+	script := f.getScriptInfo(fileName)
+	if script == nil {
+		t.Fatalf("Cannot apply edits to unknown file: %s", fileName)
+	}
+	slices.SortFunc(edits, func(a, b *lsproto.TextEdit) int {
+		aStart := f.converters.LineAndCharacterToPosition(script, a.Range.Start)
+		bStart := f.converters.LineAndCharacterToPosition(script, b.Range.Start)
+		return int(aStart) - int(bStart)
+	})
+	// Apply edits in reverse order
+	for i := len(edits) - 1; i >= 0; i-- {
+		edit := edits[i]
+		start := int(f.converters.LineAndCharacterToPosition(script, edit.Range.Start))
+		end := int(f.converters.LineAndCharacterToPosition(script, edit.Range.End))
+		f.editScriptAndUpdateMarkers(t, fileName, start, end, edit.NewText)
+	}
 }
 
 func (f *FourslashTest) Replace(t *testing.T, start int, length int, text string) {

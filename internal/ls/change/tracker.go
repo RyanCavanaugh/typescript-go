@@ -223,6 +223,15 @@ func (t *Tracker) DeleteNodeRange(sourceFile *ast.SourceFile, startNode *ast.Nod
 	t.ReplaceRangeWithText(sourceFile, lsproto.Range{Start: startPos, End: endPos}, "")
 }
 
+// DeleteNodeRangeExcludingEnd deletes from startNode up to but not including endNode.
+func (t *Tracker) DeleteNodeRangeExcludingEnd(sourceFile *ast.SourceFile, startNode *ast.Node, endNode *ast.Node, leadingTrivia LeadingTriviaOption) {
+	startPosition := t.getAdjustedStartPosition(sourceFile, startNode, leadingTrivia, false)
+	endPosition := t.getAdjustedStartPosition(sourceFile, endNode, LeadingTriviaOptionIncludeAll, false)
+	startPos := t.converters.PositionToLineAndCharacter(sourceFile, core.TextPos(startPosition))
+	endPos := t.converters.PositionToLineAndCharacter(sourceFile, core.TextPos(endPosition))
+	t.ReplaceRangeWithText(sourceFile, lsproto.Range{Start: startPos, End: endPos}, "")
+}
+
 // finishDeleteDeclarations processes all queued deletions with smart handling for lists and trailing commas.
 func (t *Tracker) finishDeleteDeclarations() {
 	deletedNodesInLists := make(map[*ast.Node]bool)

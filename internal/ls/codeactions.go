@@ -55,6 +55,12 @@ func (l *LanguageService) ProvideCodeActions(ctx context.Context, params *lsprot
 
 	var actions []lsproto.CommandOrCodeAction
 
+	// Collect requested kinds for filtering
+	var requestedKinds []lsproto.CodeActionKind
+	if params.Context != nil && params.Context.Only != nil {
+		requestedKinds = *params.Context.Only
+	}
+
 	// Handle source actions (like organize imports)
 	if params.Context != nil && params.Context.Only != nil {
 		for _, kind := range *params.Context.Only {
@@ -107,7 +113,133 @@ func (l *LanguageService) ProvideCodeActions(ctx context.Context, params *lsprot
 		}
 	}
 
+	// Handle refactoring providers
+	triggerKind := lsproto.CodeActionTriggerKindInvoked
+	if params.Context != nil && params.Context.TriggerKind != nil {
+		triggerKind = *params.Context.TriggerKind
+	}
+
+	startPosition := l.converters.LineAndCharacterToPosition(file, params.Range.Start)
+	endPosition := l.converters.LineAndCharacterToPosition(file, params.Range.End)
+	refactorContext := &RefactorContext{
+		SourceFile:    file,
+		StartPosition: int(startPosition),
+		EndPosition:   int(endPosition),
+		Program:       program,
+		LS:            l,
+		TriggerKind:   triggerKind,
+	}
+
+	refactorActions := getApplicableRefactorsWithProviders(ctx, refactorContext, requestedKinds)
+	for _, ra := range refactorActions {
+		lspAction := convertRefactorToLSPCodeAction(ra.Action, ra.ProviderName, params)
+		if lspAction != nil {
+			actions = append(actions, *lspAction)
+		}
+	}
+
 	return lsproto.CommandOrCodeActionArrayOrNull{CommandOrCodeActionArray: &actions}, nil
+}
+
+// GetEditsForRefactor returns the edits for a specific refactoring action.
+func (l *LanguageService) GetEditsForRefactor(ctx context.Context, fileName string, startPosition int, endPosition int, refactorName string, actionName string, args *lsproto.InteractiveRefactorArguments) *RefactorEditInfo {
+	program, file := l.tryGetProgramAndFile(fileName)
+	if file == nil {
+		return nil
+	}
+
+	refactorContext := &RefactorContext{
+		SourceFile:    file,
+		StartPosition: startPosition,
+		EndPosition:   endPosition,
+		Program:       program,
+		LS:            l,
+		TriggerKind:   lsproto.CodeActionTriggerKindInvoked,
+	}
+
+	for _, provider := range refactorProviders {
+		if provider.Name == refactorName {
+			return provider.GetEditsForAction(ctx, refactorContext, actionName, args)
+		}
+	}
+	return nil
+}
+
+// ResolveCodeAction resolves a code action by computing its edits.
+func (l *LanguageService) ResolveCodeAction(ctx context.Context, codeAction *lsproto.CodeAction) *lsproto.CodeAction {
+	if codeAction.Data == nil || codeAction.Data.Type != "refactor" {
+		return codeAction
+	}
+
+	fileName := codeAction.Data.Uri.FileName()
+	_, file := l.tryGetProgramAndFile(fileName)
+	if file == nil {
+		return codeAction
+	}
+
+	r := codeAction.Data.Range
+	if r == nil {
+		return codeAction
+	}
+	startPos := int(l.converters.LineAndCharacterToPosition(file, r.Start))
+	endPos := int(l.converters.LineAndCharacterToPosition(file, r.End))
+
+	editInfo := l.GetEditsForRefactor(ctx, fileName, startPos, endPos, codeAction.Data.RefactorName, codeAction.Data.ActionName, codeAction.Data.InteractiveRefactorArguments)
+	if editInfo == nil {
+		return codeAction
+	}
+
+	workspaceEdit := refactorEditInfoToWorkspaceEdit(editInfo)
+	codeAction.Edit = workspaceEdit
+	return codeAction
+}
+
+// refactorEditInfoToWorkspaceEdit converts a RefactorEditInfo to an LSP WorkspaceEdit.
+func refactorEditInfoToWorkspaceEdit(editInfo *RefactorEditInfo) *lsproto.WorkspaceEdit {
+	changes := make(map[lsproto.DocumentUri][]*lsproto.TextEdit)
+	for fileName, edits := range editInfo.Edits {
+		uri := lsconv.FileNameToDocumentURI(fileName)
+		changes[uri] = edits
+	}
+
+	var documentChanges []lsproto.TextDocumentEditOrCreateFileOrRenameFileOrDeleteFile
+	// Handle new files
+	for _, newFile := range editInfo.NewFiles {
+		uri := lsconv.FileNameToDocumentURI(newFile.FileName)
+		createOp := &lsproto.CreateFile{
+			Kind: lsproto.StringLiteralCreate{},
+			Uri:  uri,
+		}
+		documentChanges = append(documentChanges, lsproto.TextDocumentEditOrCreateFileOrRenameFileOrDeleteFile{
+			CreateFile: createOp,
+		})
+		// Also add the content as a text edit on the new file
+		edit := &lsproto.TextDocumentEdit{
+			TextDocument: lsproto.OptionalVersionedTextDocumentIdentifier{
+				Uri: uri,
+			},
+			Edits: []lsproto.TextEditOrAnnotatedTextEditOrSnippetTextEdit{
+				{
+					TextEdit: &lsproto.TextEdit{
+						Range:   lsproto.Range{},
+						NewText: newFile.Content,
+					},
+				},
+			},
+		}
+		documentChanges = append(documentChanges, lsproto.TextDocumentEditOrCreateFileOrRenameFileOrDeleteFile{
+			TextDocumentEdit: edit,
+		})
+	}
+
+	result := &lsproto.WorkspaceEdit{}
+	if len(changes) > 0 {
+		result.Changes = &changes
+	}
+	if len(documentChanges) > 0 {
+		result.DocumentChanges = &documentChanges
+	}
+	return result
 }
 
 // getOrganizeImportsActionTitle returns the appropriate title for the given organize imports kind
@@ -203,6 +335,37 @@ func convertToLSPCodeAction(action *CodeAction, diag *lsproto.Diagnostic, uri ls
 			Kind:        &kind,
 			Edit:        &lsproto.WorkspaceEdit{Changes: &changes},
 			Diagnostics: &diagnostics,
+		},
+	}
+}
+
+// convertRefactorToLSPCodeAction converts a refactoring action info to an LSP CodeAction.
+func convertRefactorToLSPCodeAction(action *RefactorActionInfo, providerName string, params *lsproto.CodeActionParams) *lsproto.CommandOrCodeAction {
+	data := &lsproto.CodeActionData{
+		Type:         "refactor",
+		RefactorName: providerName,
+		ActionName:   action.Name,
+		Uri:          params.TextDocument.Uri,
+		Range:        &params.Range,
+	}
+
+	if action.NotApplicableReason != "" {
+		disabled := &lsproto.CodeActionDisabled{Reason: action.NotApplicableReason}
+		return &lsproto.CommandOrCodeAction{
+			CodeAction: &lsproto.CodeAction{
+				Title:    action.Description,
+				Kind:     &action.Kind,
+				Disabled: disabled,
+				Data:     data,
+			},
+		}
+	}
+
+	return &lsproto.CommandOrCodeAction{
+		CodeAction: &lsproto.CodeAction{
+			Title: action.Description,
+			Kind:  &action.Kind,
+			Data:  data,
 		},
 	}
 }

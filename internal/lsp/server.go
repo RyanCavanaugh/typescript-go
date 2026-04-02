@@ -708,6 +708,7 @@ var handlers = sync.OnceValue(func() handlerMap {
 	registerRequestHandler(handlers, lsproto.WorkspaceSymbolInfo, (*Server).handleWorkspaceSymbol)
 	registerRequestHandler(handlers, lsproto.CompletionItemResolveInfo, (*Server).handleCompletionItemResolve)
 	registerRequestHandler(handlers, lsproto.CodeLensResolveInfo, (*Server).handleCodeLensResolve)
+	registerRequestHandler(handlers, lsproto.CodeActionResolveInfo, (*Server).handleCodeActionResolve)
 
 	// Developer/debugging commands
 	registerRequestHandler(handlers, lsproto.CustomRunGCInfo, (*Server).handleRunGC)
@@ -1053,7 +1054,9 @@ func (s *Server) handleInitialize(ctx context.Context, params *lsproto.Initializ
 						lsproto.CodeActionKindSourceOrganizeImports,
 						lsproto.CodeActionKindSourceRemoveUnusedImports,
 						lsproto.CodeActionKindSourceSortImports,
+						lsproto.CodeActionKindRefactorMove,
 					},
+					ResolveProvider: new(true),
 				},
 			},
 			CallHierarchyProvider: &lsproto.BooleanOrCallHierarchyOptionsOrCallHierarchyRegistrationOptions{
@@ -1335,6 +1338,20 @@ func (s *Server) handleSelectionRange(ctx context.Context, ls *ls.LanguageServic
 
 func (s *Server) handleCodeAction(ctx context.Context, ls *ls.LanguageService, params *lsproto.CodeActionParams) (lsproto.CodeActionResponse, error) {
 	return ls.ProvideCodeActions(ctx, params)
+}
+
+func (s *Server) handleCodeActionResolve(ctx context.Context, codeAction *lsproto.CodeAction, reqMsg *lsproto.RequestMessage) (*lsproto.CodeAction, error) {
+	if codeAction.Data == nil || codeAction.Data.Type != "refactor" {
+		return codeAction, nil
+	}
+
+	languageService, err := s.session.GetLanguageService(ctx, codeAction.Data.Uri)
+	if err != nil {
+		return codeAction, err
+	}
+
+	result := languageService.ResolveCodeAction(ctx, codeAction)
+	return result, nil
 }
 
 func (s *Server) handleInlayHint(

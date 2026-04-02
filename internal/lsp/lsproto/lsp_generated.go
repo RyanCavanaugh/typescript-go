@@ -21849,7 +21849,118 @@ type TypeHierarchyItemData struct{}
 type InlayHintData struct{}
 
 // CodeActionData is a placeholder for custom data preserved on a CodeAction.
-type CodeActionData struct{}
+type CodeActionData struct {
+	// The type of code action ("refactor", etc.).
+	Type string `json:"type,omitzero"`
+
+	// The name of the refactoring provider.
+	RefactorName string `json:"refactorName,omitzero"`
+
+	// The name of the specific refactoring action.
+	ActionName string `json:"actionName,omitzero"`
+
+	// The document URI for the code action.
+	Uri DocumentUri `json:"uri,omitzero"`
+
+	// The range in the document for the code action.
+	Range *Range `json:"range,omitzero"`
+
+	// Interactive refactor arguments (e.g., target file).
+	InteractiveRefactorArguments *InteractiveRefactorArguments `json:"interactiveRefactorArguments,omitzero"`
+}
+
+// InteractiveRefactorArguments provides arguments for interactive refactorings.
+type InteractiveRefactorArguments struct {
+	TargetFile string `json:"targetFile"`
+}
+
+func (s *CodeActionData) IsZero() bool {
+	return s.Type == "" && s.RefactorName == "" && s.ActionName == "" && s.Uri == "" && s.Range == nil && s.InteractiveRefactorArguments == nil
+}
+
+var _ json.UnmarshalerFrom = (*CodeActionData)(nil)
+
+func (s *CodeActionData) UnmarshalJSONFrom(dec *json.Decoder) error {
+	if k := dec.PeekKind(); k != '{' {
+		return fmt.Errorf("expected object start, but encountered %v", k)
+	}
+	if _, err := dec.ReadToken(); err != nil {
+		return err
+	}
+	for dec.PeekKind() != '}' {
+		name, err := dec.ReadValue()
+		if err != nil {
+			return err
+		}
+		switch string(name) {
+		case `"type"`:
+			if err := json.UnmarshalDecode(dec, &s.Type); err != nil {
+				return err
+			}
+		case `"refactorName"`:
+			if err := json.UnmarshalDecode(dec, &s.RefactorName); err != nil {
+				return err
+			}
+		case `"actionName"`:
+			if err := json.UnmarshalDecode(dec, &s.ActionName); err != nil {
+				return err
+			}
+		case `"uri"`:
+			if err := json.UnmarshalDecode(dec, &s.Uri); err != nil {
+				return err
+			}
+		case `"range"`:
+			s.Range = &Range{}
+			if err := json.UnmarshalDecode(dec, s.Range); err != nil {
+				return err
+			}
+		case `"interactiveRefactorArguments"`:
+			s.InteractiveRefactorArguments = &InteractiveRefactorArguments{}
+			if err := json.UnmarshalDecode(dec, s.InteractiveRefactorArguments); err != nil {
+				return err
+			}
+		default:
+			if err := dec.SkipValue(); err != nil {
+				return err
+			}
+		}
+	}
+	if _, err := dec.ReadToken(); err != nil {
+		return err
+	}
+	return nil
+}
+
+var _ json.UnmarshalerFrom = (*InteractiveRefactorArguments)(nil)
+
+func (s *InteractiveRefactorArguments) UnmarshalJSONFrom(dec *json.Decoder) error {
+	if k := dec.PeekKind(); k != '{' {
+		return fmt.Errorf("expected object start, but encountered %v", k)
+	}
+	if _, err := dec.ReadToken(); err != nil {
+		return err
+	}
+	for dec.PeekKind() != '}' {
+		name, err := dec.ReadValue()
+		if err != nil {
+			return err
+		}
+		switch string(name) {
+		case `"targetFile"`:
+			if err := json.UnmarshalDecode(dec, &s.TargetFile); err != nil {
+				return err
+			}
+		default:
+			if err := dec.SkipValue(); err != nil {
+				return err
+			}
+		}
+	}
+	if _, err := dec.ReadToken(); err != nil {
+		return err
+	}
+	return nil
+}
 
 // WorkspaceSymbolData is a placeholder for custom data preserved on a WorkspaceSymbol.
 type WorkspaceSymbolData struct{}

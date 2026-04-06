@@ -4298,6 +4298,8 @@ var Installing_types_for_0 = &Message{code: 100013, category: CategoryMessage, k
 
 var Project_0 = &Message{code: 100014, category: CategoryMessage, key: "Project_0_100014", text: "Project '{0}'"}
 
+var Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error = &Message{code: 100015, category: CategoryMessage, key: "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100015", text: "Set the number of additional lines of context to show above and below each error."}
+
 func keyToMessage(key Key) *Message {
 	switch key {
 	case "Unterminated_string_literal_1002":
@@ -8596,6 +8598,8 @@ func keyToMessage(key Key) *Message {
 		return Installing_types_for_0
 	case "Project_0_100014":
 		return Project_0
+	case "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100015":
+		return Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error
 	default:
 		return nil
 	}

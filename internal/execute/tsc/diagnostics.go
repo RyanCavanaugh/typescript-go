@@ -3,6 +3,7 @@ package tsc
 import (
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 
 	"github.com/microsoft/typescript-go/internal/ast"
@@ -32,6 +33,7 @@ func CreateDiagnosticReporter(sys System, w io.Writer, locale locale.Locale, opt
 		return QuietDiagnosticReporter
 	}
 	formatOpts := getFormatOptsOfSys(sys, locale)
+	formatOpts.ExpandedErrorContext = getExpandedErrorContext(sys, options)
 	if shouldBePretty(sys, options) {
 		return func(diagnostic *ast.Diagnostic) {
 			diagnosticwriter.FormatDiagnosticWithColorAndContext(w, diagnosticwriter.WrapASTDiagnostic(diagnostic), formatOpts)
@@ -41,6 +43,21 @@ func CreateDiagnosticReporter(sys System, w io.Writer, locale locale.Locale, opt
 	return func(diagnostic *ast.Diagnostic) {
 		diagnosticwriter.WriteFormatDiagnostic(w, diagnosticwriter.WrapASTDiagnostic(diagnostic), formatOpts)
 	}
+}
+
+func getExpandedErrorContext(sys System, options *core.CompilerOptions) int {
+	// Command-line/tsconfig option takes priority over environment variable.
+	if options != nil && options.ExpandedErrorContext != nil {
+		if v := *options.ExpandedErrorContext; v >= 0 {
+			return v
+		}
+	}
+	if envVal := sys.GetEnvironmentVariable("TSC_EEC"); envVal != "" {
+		if v, err := strconv.Atoi(envVal); err == nil && v >= 0 {
+			return v
+		}
+	}
+	return 0
 }
 
 func defaultIsPretty(sys System) bool {

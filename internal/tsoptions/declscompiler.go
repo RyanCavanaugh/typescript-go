@@ -250,6 +250,13 @@ var commonOptionsWithBuild = []*CommandLineOption{
 		DefaultValueDescription: diagnostics.X_4_unless_singleThreaded_is_passed,
 		minValue:                1,
 	},
+	{
+		Name:                    "expandedErrorContext",
+		Kind:                    CommandLineOptionTypeNumber,
+		Category:                diagnostics.Output_Formatting,
+		Description:             diagnostics.Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error,
+		DefaultValueDescription: 0,
+	},
 }
 
 var optionsForCompiler = []*CommandLineOption{

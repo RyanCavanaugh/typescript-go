@@ -134,6 +134,11 @@ Generate pprof CPU/memory profiles to the given directory.
 [94m--checkers[39m
 Set the number of checkers per project.
 
+[94m--expandedErrorContext[39m
+Set the number of additional lines of context to show above and below each error.
+type: number
+default: 0
+
 [94m--verbose, -v[39m
 Enable verbose logging.
 

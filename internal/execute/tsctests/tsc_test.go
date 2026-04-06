@@ -228,6 +228,68 @@ func TestTscCommandline(t *testing.T) {
 			subScenario:     "bad locale",
 			commandLineArgs: []string{"--locale", "whoops", "--version"},
 		},
+		{
+			subScenario: "expanded error context shows surrounding lines",
+			files: FileMap{
+				"/home/src/workspaces/project/index.ts": stringtestutil.Dedent(`
+				const a: number = 1;
+				const b: string = 2;
+				const c: number = 3;
+				const d: number = 4;
+				const e: number = 5;
+				`),
+			},
+			commandLineArgs: []string{"--expandedErrorContext", "2", "index.ts"},
+		},
+		{
+			subScenario: "expanded error context with env var",
+			files: FileMap{
+				"/home/src/workspaces/project/index.ts": stringtestutil.Dedent(`
+				const a: number = 1;
+				const b: string = 2;
+				const c: number = 3;
+				`),
+			},
+			env: map[string]string{
+				"TSC_EEC": "1",
+			},
+			commandLineArgs: []string{"index.ts"},
+		},
+		{
+			subScenario: "expanded error context cli overrides env var",
+			files: FileMap{
+				"/home/src/workspaces/project/index.ts": stringtestutil.Dedent(`
+				const a: number = 1;
+				const b: string = 2;
+				const c: number = 3;
+				const d: number = 4;
+				const e: number = 5;
+				`),
+			},
+			env: map[string]string{
+				"TSC_EEC": "1",
+			},
+			commandLineArgs: []string{"--expandedErrorContext", "3", "index.ts"},
+		},
+		{
+			subScenario: "expanded error context with tsconfig",
+			files: FileMap{
+				"/home/src/workspaces/project/index.ts": stringtestutil.Dedent(`
+				const a: number = 1;
+				const b: string = 2;
+				const c: number = 3;
+				const d: number = 4;
+				const e: number = 5;
+				`),
+				"/home/src/workspaces/project/tsconfig.json": stringtestutil.Dedent(`
+				{
+					"compilerOptions": {
+						"expandedErrorContext": 2
+					}
+				}`),
+			},
+			commandLineArgs: []string{},
+		},
 	}
 
 	for _, testCase := range testCases {

@@ -4292,7 +4292,13 @@ var Set_the_number_of_projects_to_build_concurrently = &Message{code: 100009, ca
 
 var Deduplicate_packages_with_the_same_name_and_version = &Message{code: 100011, category: CategoryMessage, key: "Deduplicate_packages_with_the_same_name_and_version_100011", text: "Deduplicate packages with the same name and version."}
 
-var Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error = &Message{code: 100012, category: CategoryMessage, key: "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100012", text: "Set the number of additional lines of context to show above and below each error."}
+var Loading = &Message{code: 100012, category: CategoryMessage, key: "Loading_100012", text: "Loading"}
+
+var Installing_types_for_0 = &Message{code: 100013, category: CategoryMessage, key: "Installing_types_for_0_100013", text: "Installing types for '{0}'"}
+
+var Project_0 = &Message{code: 100014, category: CategoryMessage, key: "Project_0_100014", text: "Project '{0}'"}
+
+var Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error = &Message{code: 100015, category: CategoryMessage, key: "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100015", text: "Set the number of additional lines of context to show above and below each error."}
 
 func keyToMessage(key Key) *Message {
 	switch key {
@@ -8586,7 +8592,13 @@ func keyToMessage(key Key) *Message {
 		return Set_the_number_of_projects_to_build_concurrently
 	case "Deduplicate_packages_with_the_same_name_and_version_100011":
 		return Deduplicate_packages_with_the_same_name_and_version
-	case "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100012":
+	case "Loading_100012":
+		return Loading
+	case "Installing_types_for_0_100013":
+		return Installing_types_for_0
+	case "Project_0_100014":
+		return Project_0
+	case "Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error_100015":
 		return Set_the_number_of_additional_lines_of_context_to_show_above_and_below_each_error
 	default:
 		return nil

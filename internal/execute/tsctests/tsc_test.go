@@ -2676,7 +2676,6 @@ func TestTscModuleResolution(t *testing.T) {
 							"target": "es5",
 							"module": "esnext",
 							"lib": ["ES5"],
-							"moduleResolution": "node",
 							"outDir": "dist",
 						},
 						"include": ["src"],

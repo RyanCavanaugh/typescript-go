@@ -56,7 +56,7 @@ func (l *LanguageService) ProvideHover(ctx context.Context, documentURI lsproto.
 					Value: content,
 				},
 			},
-			Range: hoverRange,
+			Range: &hoverRange,
 		},
 	}, nil
 }
@@ -323,6 +323,7 @@ func getQuickInfoAndDeclarationAtLocation(c *checker.Checker, symbol *ast.Symbol
 				default:
 					decl := symbol.ValueDeclaration
 					if decl != nil {
+						decl = ast.GetRootDeclaration(decl)
 						switch {
 						case ast.IsParameter(decl):
 							b.WriteString("(parameter) ")
